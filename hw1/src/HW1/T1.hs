@@ -1,10 +1,11 @@
 module HW1.T1
-  ( Day (..)
-  , afterDays
-  , daysToParty
-  , isWeekend
-  , nextDay
-  ) where
+  ( Day (..),
+    afterDays,
+    daysToParty,
+    isWeekend,
+    nextDay,
+  )
+where
 
 import Numeric.Natural (Natural)
 
@@ -16,16 +17,26 @@ data Day
   | Friday
   | Saturday
   | Sunday
-  deriving Show
+  deriving (Show, Eq)
 
 nextDay :: Day -> Day
-nextDay = undefined
+nextDay Monday    = Tuesday
+nextDay Tuesday   = Wednesday
+nextDay Wednesday = Thursday
+nextDay Thursday  = Friday
+nextDay Friday    = Saturday
+nextDay Saturday  = Sunday
+nextDay Sunday    = Monday
 
 afterDays :: Natural -> Day -> Day
-afterDays = undefined
+afterDays 0 day = day
+afterDays n day
+  | n >= 7 = afterDays (n `mod` 7) day
+  | otherwise = afterDays (n - 1) (nextDay day)
 
 isWeekend :: Day -> Bool
-isWeekend = undefined
+isWeekend day = day `elem` [Saturday, Sunday]
 
 daysToParty :: Day -> Natural
-daysToParty = undefined
+daysToParty Friday = 0
+daysToParty day    = (+) 1 $ daysToParty $ nextDay day
